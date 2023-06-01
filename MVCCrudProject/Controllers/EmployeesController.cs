@@ -23,8 +23,12 @@ namespace MVCCrudProject.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
+
+            var departments = await mvcDemoDbContext.Departments.ToListAsync();
+
+            ViewBag.Departments = departments;
             return View();
         }
 
@@ -39,7 +43,7 @@ namespace MVCCrudProject.Controllers
                 Email = addEmployeeRequest.Email,
                 DateOfBirth = addEmployeeRequest.DateOfBirth,
                 Salary = addEmployeeRequest.Salary,
-                Department = addEmployeeRequest.Department
+                DeptID = addEmployeeRequest.DeptID,
             };
 
             await mvcDemoDbContext.Employees.AddAsync(employee);
@@ -51,6 +55,9 @@ namespace MVCCrudProject.Controllers
         public async Task<IActionResult> View(Guid id)
         {
             var employee = await mvcDemoDbContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
+            var departments = await mvcDemoDbContext.Departments.ToListAsync();
+
+            ViewBag.Departments = departments;
 
             if (employee != null)
             {
@@ -62,7 +69,7 @@ namespace MVCCrudProject.Controllers
                     Email = employee.Email,
                     DateOfBirth = employee.DateOfBirth,
                     Salary = employee.Salary,
-                    Department = employee.Department
+                    DeptID = employee.DeptID
                 };
                 return await Task.Run(() => View("View", viewModel));
             }
@@ -81,7 +88,7 @@ namespace MVCCrudProject.Controllers
                 employee.Email = model.Email;
                 employee.DateOfBirth = model.DateOfBirth;
                 employee.Salary = model.Salary;
-                employee.Department = model.Department;
+                employee.DeptID = model.DeptID;
 
                 await mvcDemoDbContext.SaveChangesAsync();
                 return RedirectToAction("Index");

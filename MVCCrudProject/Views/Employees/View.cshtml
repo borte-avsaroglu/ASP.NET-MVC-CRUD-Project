@@ -1,6 +1,8 @@
-﻿@model MVCCrudProject.Models.UpdateEmployeeViewModel
+﻿@using MVCCrudProject.Models.Domain;
+@model MVCCrudProject.Models.UpdateEmployeeViewModel
 
 @{
+    var departments = ViewBag.Departments as List<Department>;
 }
 
 <h1>Edit Employee</h1>
@@ -31,7 +33,17 @@
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Department</label>
-        <input type="text" class="form-control" asp-for="Department">
+        <select class="form-control" asp-for="DeptID">
+            <option value="">Please Select Your Department</option>
+            @foreach (var department in departments)
+            {
+                <option value="@department.Id">
+
+                    @department.DeptName
+                </option>
+
+            }
+        </select>
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
