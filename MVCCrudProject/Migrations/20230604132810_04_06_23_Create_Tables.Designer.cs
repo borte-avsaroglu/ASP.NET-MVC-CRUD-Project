@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCCrudProject.Migrations
 {
     [DbContext(typeof(MVCDemoDbContext))]
-    [Migration("20230601202101_01_06_23_Create_Tables")]
-    partial class _01_06_23_Create_Tables
+    [Migration("20230604132810_04_06_23_Create_Tables")]
+    partial class _04_06_23_Create_Tables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,9 +51,6 @@ namespace MVCCrudProject.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
                     b.Property<int>("DeptID")
                         .HasColumnType("int");
 
@@ -74,7 +71,7 @@ namespace MVCCrudProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("DeptID");
 
                     b.ToTable("Employees");
                 });
@@ -83,7 +80,7 @@ namespace MVCCrudProject.Migrations
                 {
                     b.HasOne("MVCCrudProject.Models.Domain.Department", "Department")
                         .WithMany("Employees")
-                        .HasForeignKey("DepartmentId")
+                        .HasForeignKey("DeptID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

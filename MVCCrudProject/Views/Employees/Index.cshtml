@@ -1,8 +1,9 @@
 ﻿@model List<MVCCrudProject.Models.Domain.Employee>
 @{
+    ViewData["Title"] = "All Employees";
 }
 
-<h1 class="mb-3">List Employees</h1>
+<h1 class="mb-3">All Employees</h1>
 
 <table class="table">
     <thead>
@@ -27,7 +28,7 @@
                 <td>@employee.Email</td>
                 <td>@employee.DateOfBirth.ToString("dd-MM-yyyy")</td>
                 <td>@employee.Salary</td>
-                <td>@employee.Department</td>
+                <td>@employee.Department.DeptName</td>
                 <td><a href="Employees/View/@employee.Id">View</a></td>
             </tr>
         }

@@ -48,9 +48,6 @@ namespace MVCCrudProject.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
                     b.Property<int>("DeptID")
                         .HasColumnType("int");
 
@@ -71,7 +68,7 @@ namespace MVCCrudProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("DeptID");
 
                     b.ToTable("Employees");
                 });
@@ -80,7 +77,7 @@ namespace MVCCrudProject.Migrations
                 {
                     b.HasOne("MVCCrudProject.Models.Domain.Department", "Department")
                         .WithMany("Employees")
-                        .HasForeignKey("DepartmentId")
+                        .HasForeignKey("DeptID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

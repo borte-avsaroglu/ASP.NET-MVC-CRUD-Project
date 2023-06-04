@@ -18,8 +18,9 @@ namespace MVCCrudProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var employees = await mvcDemoDbContext.Employees.ToListAsync();
+            List<Employee> employees = mvcDemoDbContext.Employees.Include(e => e.Department).ToList();
             return View(employees);
+
         }
 
         [HttpGet]

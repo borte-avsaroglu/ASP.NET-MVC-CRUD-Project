@@ -2,10 +2,11 @@
 @model MVCCrudProject.Models.AddEmployeeViewModel
 
 @{
+    ViewData["Title"] = "Add New Employee";
     var departments = ViewBag.Departments as List<Department>;
 }
 
-<h1>Add Employee</h1>
+<h1>Add New Employee</h1>
 <form method="post" action="Add" class="mt-5">
     <div class="mb-3">
         <label for="" class="form-label">Name</label>

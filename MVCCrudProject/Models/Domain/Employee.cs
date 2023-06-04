@@ -12,9 +12,7 @@ namespace MVCCrudProject.Models.Domain
         public string Email { get; set; }
         public DateTime DateOfBirth { get; set; }
         public long Salary { get; set; }
-
         public int DeptID { get; set; }
-        [ForeignKey("DeptID")]
         public Department Department { get; set; }
 
     }
