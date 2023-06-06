@@ -21,5 +21,6 @@ namespace MVCCrudProject.Models.Domain
         public int DeptID { get; set; }
         public Department Department { get; set; }
 
+        public string aaaaa { get; set; }
     }
 }
