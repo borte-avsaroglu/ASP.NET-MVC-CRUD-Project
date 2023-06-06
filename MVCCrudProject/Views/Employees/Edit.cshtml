@@ -2,13 +2,12 @@
 @model MVCCrudProject.Models.UpdateEmployeeViewModel
 
 @{
-    ViewData["Title"] = "View Employee";
-
+    ViewData["Title"] = "Edit Employee";
     var departments = ViewBag.Departments as List<Department>;
 }
 
 <h1>Edit Employee</h1>
-<form method="post" action="View" class="mt-5">
+<form method="post" id="editEmployeeForm" action="Edit" class="mt-5">
     <div class="mb-3">
         <label for="" class="form-label">Id</label>
         <input required type="text" class="form-control" asp-for="Id" readonly>
@@ -47,6 +46,31 @@
             }
         </select>
     </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button class="btn btn-primary" name="edit-btn">Save Changes</button>
+    <a class="btn btn-secondary" href="Index.cshtml">Back</a>
 </form>
+
+@*delete butonunudur bu *@
+<script>
+    const form = document.getElementById("editEmployeeForm")
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        return Swal.fire({
+            title: 'Do you want to save the changes?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                form.submit().then(function () {
+                    Swal.fire("Success");
+                });
+                Swal.fire('Saved!', '', 'success')
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+    })
+</script>

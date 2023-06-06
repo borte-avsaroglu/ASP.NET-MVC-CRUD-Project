@@ -30,7 +30,7 @@
                 <td>@employee.Salary</td>
                 <td>@employee.Department.DeptName</td>
                 <td>
-                    <a href="Employees/View/@employee.Id" class="btn btn-sm btn-primary">View</a>
+                    <a href="Employees/Edit/@employee.Id" class="btn btn-sm btn-primary">View</a>
                     <button onclick="showDeleteConfirmation('@employee.Id')" class="btn btn-sm btn-danger"
                             asp-action="Delete"
                             asp-controller="Employees">

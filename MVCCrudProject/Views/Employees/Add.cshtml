@@ -49,23 +49,23 @@
 
 <script>
     const form = document.getElementById("addEmployeeForm")
-    form.addEventListener("submit", function (e){
+    form.addEventListener("submit", function (e) {
         e.preventDefault();
         return Swal.fire({
-            title: 'Do you want to save the changes?',
+            title: 'Do you want to add employee?',
             showDenyButton: true,
             showCancelButton: true,
-            confirmButtonText: 'Save',
-            denyButtonText: `Don't save`,
+            confirmButtonText: 'Add',
+            denyButtonText: `Don't Add`,
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                form.submit().then(function(){
+                form.submit().then(function () {
                     Swal.fire("Success");
                 });
                 Swal.fire('Saved!', '', 'success')
             } else if (result.isDenied) {
-                Swal.fire('Changes are not saved', '', 'info')
+                Swal.fire('No employee added', '', 'info')
             }
         })
     })

@@ -54,7 +54,7 @@ namespace MVCCrudProject.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> View(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             var employee = await mvcDemoDbContext.Employees.FirstOrDefaultAsync(employee => employee.Id == id); 
             var departments = await mvcDemoDbContext.Departments.ToListAsync();
@@ -73,13 +73,13 @@ namespace MVCCrudProject.Controllers
                     Salary = employee.Salary,
                     DeptID = employee.DeptID
                 };
-                return await Task.Run(() => View("View", viewModel));
+                return await Task.Run(() => View("Edit", viewModel));
             }
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public async Task<IActionResult> View(UpdateEmployeeViewModel model)
+        public async Task<IActionResult> Edit(UpdateEmployeeViewModel model)
         {
             var employee = await mvcDemoDbContext.Employees.FindAsync(model.Id);
 
