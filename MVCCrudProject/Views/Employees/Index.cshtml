@@ -1,8 +1,9 @@
 ﻿@model List<MVCCrudProject.Models.Domain.Employee>
 @{
+    ViewData["Title"] = "All Employees";
 }
 
-<h1 class="mb-3">List Employees</h1>
+<h1 class="mb-3">All Employees</h1>
 
 <table class="table">
     <thead>
@@ -14,7 +15,7 @@
             <th>Date Of Birth</th>
             <th>Salary</th>
             <th>Department</th>
-            <th> </th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -27,9 +28,48 @@
                 <td>@employee.Email</td>
                 <td>@employee.DateOfBirth.ToString("dd-MM-yyyy")</td>
                 <td>@employee.Salary</td>
-                <td>@employee.Department</td>
-                <td><a href="Employees/View/@employee.Id">View</a></td>
+                <td>@employee.Department.DeptName</td>
+                <td>
+                    <a href="Employees/Edit/@employee.Id" class="btn btn-sm btn-primary">View</a>
+                    <button onclick="showDeleteConfirmation('@employee.Id')" class="btn btn-sm btn-danger"
+                            asp-action="Delete"
+                            asp-controller="Employees">
+                        Delete
+                    </button>
+                </td>
+                
             </tr>
         }
     </tbody>
 </table>
+
+<script>
+    function showDeleteConfirmation(Id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to delete the employee.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                //vanilla ajax fetch api
+                return fetch("https://localhost:7139/Employees/Delete/" + Id,{method:"Post"}).then(function(res){return res.json()}).then(function(result)
+                {
+                    if(result.success){
+                        Swal.fire("Success").then(function(){
+                            window.location.reload();
+                        });
+                    }
+                    else{
+                        Swal.fire("Fail");
+                    }
+
+                })
+            }
+        });
+    }
+
+</script>

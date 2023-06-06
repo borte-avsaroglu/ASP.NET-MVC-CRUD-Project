@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCCrudProject.Data;
 using MVCCrudProject.Models;
@@ -18,13 +19,18 @@ namespace MVCCrudProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var employees = await mvcDemoDbContext.Employees.ToListAsync();
+            List<Employee> employees = mvcDemoDbContext.Employees.Include(e => e.Department).ToList();
             return View(employees);
+
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
+
+            var departments = await mvcDemoDbContext.Departments.ToListAsync();
+
+            ViewBag.Departments = departments;
             return View();
         }
 
@@ -39,7 +45,7 @@ namespace MVCCrudProject.Controllers
                 Email = addEmployeeRequest.Email,
                 DateOfBirth = addEmployeeRequest.DateOfBirth,
                 Salary = addEmployeeRequest.Salary,
-                Department = addEmployeeRequest.Department
+                DeptID = addEmployeeRequest.DeptID,
             };
 
             await mvcDemoDbContext.Employees.AddAsync(employee);
@@ -48,9 +54,12 @@ namespace MVCCrudProject.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> View(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            var employee = await mvcDemoDbContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
+            var employee = await mvcDemoDbContext.Employees.FirstOrDefaultAsync(employee => employee.Id == id); 
+            var departments = await mvcDemoDbContext.Departments.ToListAsync();
+
+            ViewBag.Departments = departments;
 
             if (employee != null)
             {
@@ -62,15 +71,15 @@ namespace MVCCrudProject.Controllers
                     Email = employee.Email,
                     DateOfBirth = employee.DateOfBirth,
                     Salary = employee.Salary,
-                    Department = employee.Department
+                    DeptID = employee.DeptID
                 };
-                return await Task.Run(() => View("View", viewModel));
+                return await Task.Run(() => View("Edit", viewModel));
             }
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public async Task<IActionResult> View(UpdateEmployeeViewModel model)
+        public async Task<IActionResult> Edit(UpdateEmployeeViewModel model)
         {
             var employee = await mvcDemoDbContext.Employees.FindAsync(model.Id);
 
@@ -81,7 +90,7 @@ namespace MVCCrudProject.Controllers
                 employee.Email = model.Email;
                 employee.DateOfBirth = model.DateOfBirth;
                 employee.Salary = model.Salary;
-                employee.Department = model.Department;
+                employee.DeptID = model.DeptID;
 
                 await mvcDemoDbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -93,15 +102,17 @@ namespace MVCCrudProject.Controllers
         public async Task<IActionResult> Delete(UpdateEmployeeViewModel model)
         {
             var employee = mvcDemoDbContext.Employees.Find(model.Id);
+            var response = new { success = false, message = "Deletion failed." };
 
-            if(employee != null)
+            if (employee != null)
             {
                 mvcDemoDbContext.Employees.Remove(employee);
                 await mvcDemoDbContext.SaveChangesAsync();
 
-                return RedirectToAction("Index");
+                response = new { success = true, message = "Deletion successful." };
+
             }
-            return RedirectToAction("Index");
+            return Json(response);
         }
     }
 }

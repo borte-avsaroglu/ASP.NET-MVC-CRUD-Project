@@ -1,13 +1,17 @@
 ﻿@using MVCCrudProject.Models.Domain;
-@model MVCCrudProject.Models.AddEmployeeViewModel
+@model MVCCrudProject.Models.UpdateEmployeeViewModel
 
 @{
-    ViewData["Title"] = "Add New Employee";
+    ViewData["Title"] = "Edit Employee";
     var departments = ViewBag.Departments as List<Department>;
 }
 
-<h1>Add New Employee</h1>
-<form method="post" id="addEmployeeForm" action="Add" class="mt-5">
+<h1>Edit Employee</h1>
+<form method="post" id="editEmployeeForm" action="Edit" class="mt-5">
+    <div class="mb-3">
+        <label for="" class="form-label">Id</label>
+        <input required type="text" class="form-control" asp-for="Id" readonly>
+    </div>
     <div class="mb-3">
         <label for="" class="form-label">Name</label>
         <input required type="text" class="form-control" asp-for="Fname">
@@ -35,28 +39,28 @@
             @foreach (var department in departments)
             {
                 <option value="@department.Id">
-                    
-                    @department.DeptName 
+
+                    @department.DeptName
                 </option>
- 
+
             }
         </select>
     </div>
-
-    <button class="btn btn-primary" name="submit-btn">Submit</button>
-
+    <button class="btn btn-primary" name="edit-btn">Save Changes</button>
+    <a class="btn btn-secondary" href="Index.cshtml">Back</a>
 </form>
 
+@*delete butonunudur bu *@
 <script>
-    const form = document.getElementById("addEmployeeForm")
+    const form = document.getElementById("editEmployeeForm")
     form.addEventListener("submit", function (e) {
         e.preventDefault();
         return Swal.fire({
-            title: 'Do you want to add employee?',
+            title: 'Do you want to save the changes?',
             showDenyButton: true,
             showCancelButton: true,
-            confirmButtonText: 'Add',
-            denyButtonText: `Don't Add`,
+            confirmButtonText: 'Save',
+            denyButtonText: `Don't save`,
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
@@ -65,7 +69,7 @@
                 });
                 Swal.fire('Saved!', '', 'success')
             } else if (result.isDenied) {
-                Swal.fire('No employee added', '', 'info')
+                Swal.fire('Changes are not saved', '', 'info')
             }
         })
     })
